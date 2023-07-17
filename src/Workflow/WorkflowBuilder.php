@@ -183,9 +183,9 @@ class WorkflowBuilder
      * @param string     $name
      * @param int|string $defaultSequenceFlow
      */
-    public function addTask($id, $participant, $name = null, $defaultSequenceFlow = null)
+    public function addTask($id, $participant, $name = null, $defaultSequenceFlow = null, $meta = [])
     {
-        $this->tasks[$id] = array($participant, $name);
+        $this->tasks[$id] = array($participant, $name, $meta);
 
         if ($defaultSequenceFlow !== null) {
             $this->defaultableFlowObjects[$defaultSequenceFlow] = $id;
@@ -258,10 +258,10 @@ class WorkflowBuilder
         }
 
         foreach ($this->tasks as $id => $task) {
-            list($roleId, $name) = $task;
+            list($roleId, $name, $meta) = $task;
             $this->assertWorkflowHasRole($workflow, $roleId);
 
-            $workflow->addFlowObject(new Task($id, $workflow->getRole($roleId), $name));
+            $workflow->addFlowObject(new Task($id, $workflow->getRole($roleId), $name, $meta));
         }
 
         foreach ($this->serviceTasks as $id => $task) {

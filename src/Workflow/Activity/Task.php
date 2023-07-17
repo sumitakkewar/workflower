@@ -34,6 +34,11 @@ class Task implements ActivityInterface, \Serializable
     private $name;
 
     /**
+     * @var array
+     */
+    private $meta;
+
+    /**
      * @var WorkItemInterface[]
      */
     private $workItems = array();
@@ -48,12 +53,20 @@ class Task implements ActivityInterface, \Serializable
      * @param Role       $role
      * @param string     $name
      */
-    public function __construct($id, Role $role, $name = null)
+    public function __construct($id, Role $role, $name = null, $meta = [])
     {
         $this->id = $id;
         $this->role = $role;
         $this->name = $name;
+        $this->meta = $meta;
     }
+
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+
 
     /**
      * {@inheritdoc}
@@ -65,6 +78,7 @@ class Task implements ActivityInterface, \Serializable
             'role' => $this->role,
             'name' => $this->name,
             'workItems' => $this->workItems,
+            'meta' => $this->meta,
             'defaultSequenceFlowId' => $this->defaultSequenceFlowId,
         ));
     }

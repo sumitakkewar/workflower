@@ -136,16 +136,43 @@ class Bpmn2Reader implements ServiceInterface
             );
         }
 
-        foreach ($document->getElementsByTagNameNs('http://www.omg.org/spec/BPMN/20100524/MODEL', 'task') as $element) {
+        foreach ($document->getElementsByTagNameNs('http://www.omg.org/spec/BPMN/20100524/MODEL', 'userTask') as $element) {
             if (!$element->hasAttribute('id')) {
                 throw $this->createIdAttributeNotFoundException($element, $workflowId);
+            }
+
+            $meta = [];
+
+            if($element->hasAttribute('customFormRef')){
+                $meta['form'] = $element->getAttribute('customFormRef');
             }
 
             $workflowBuilder->addTask(
                 $element->getAttribute('id'),
                 $this->provideRoleIdForFlowObject($flowObjectRoles, $element->getAttribute('id')),
                 $element->hasAttribute('name') ? $element->getAttribute('name') : null,
-                $element->hasAttribute('default') ? $element->getAttribute('default') : null
+                $element->hasAttribute('default') ? $element->getAttribute('default') : null,
+                $meta
+            );
+        }
+
+        foreach ($document->getElementsByTagNameNs('http://www.omg.org/spec/BPMN/20100524/MODEL', 'task') as $element) {
+            if (!$element->hasAttribute('id')) {
+                throw $this->createIdAttributeNotFoundException($element, $workflowId);
+            }
+
+            $meta = [];
+
+            if($element->hasAttribute('customFormRef')){
+                $meta['form'] = $element->getAttribute('customFormRef');
+            }
+
+            $workflowBuilder->addTask(
+                $element->getAttribute('id'),
+                $this->provideRoleIdForFlowObject($flowObjectRoles, $element->getAttribute('id')),
+                $element->hasAttribute('name') ? $element->getAttribute('name') : null,
+                $element->hasAttribute('default') ? $element->getAttribute('default') : null,
+                $meta
             );
         }
 

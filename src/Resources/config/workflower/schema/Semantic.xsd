@@ -96,6 +96,7 @@
 			<xsd:element ref="extensionElements" minOccurs="0" maxOccurs="1" /> 
 		</xsd:sequence>
 		<xsd:attribute name="id" type="xsd:ID" use="optional"/>
+		<xsd:attribute name="customFormRef" type="xsd:string" use="optional"/>
 		<xsd:anyAttribute namespace="##other" processContents="lax"/>
 	</xsd:complexType>
 	
